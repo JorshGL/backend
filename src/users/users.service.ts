@@ -28,7 +28,7 @@ export class UsersService {
         {
           $or: [
             { username: { $regex: param ?? '', $options: 'i' } },
-            { email: { $regex: param ?? '', $options: 'i' } },
+            { name: { $regex: param ?? '', $options: 'i' } },
           ],
         },
         null,
