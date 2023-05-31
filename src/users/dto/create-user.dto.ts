@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 export class CreateUserDTO {
   @IsNotEmpty()
   firebaseUid: string;
@@ -9,6 +9,12 @@ export class CreateUserDTO {
   @IsNotEmpty()
   email: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   picture: string;
+
+  @IsNotEmpty()
+  name: string;
+
+  @IsOptional()
+  bio: string;
 }

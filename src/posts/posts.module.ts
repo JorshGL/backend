@@ -19,6 +19,7 @@ import { UsersModule } from 'src/users/users.module';
     UtilsModule
   ],
   providers: [PostsService],
-  controllers: [PostsController]
+  controllers: [PostsController],
+  exports: [PostsService]
 })
 export class PostsModule {}

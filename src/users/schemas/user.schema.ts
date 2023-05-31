@@ -1,25 +1,34 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
 import { Post } from 'src/posts/schemas/post.schema';
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop()
+
+  _id: Types.ObjectId;
+
+  @Prop({ isRequired: true })
   firebaseUid: string;
 
-  @Prop()
+  @Prop({ unique: true, isRequired: true })
   username: string;
 
-  @Prop()
+  @Prop({ isRequired: true })
+  name: string;
+
+  @Prop({ isRequired: true })
   email: string;
 
-  @Prop()
-  picture: string;
+  @Prop({ isRequired: false })
+  picture?: string;
+
+  @Prop({ isRequired: false })
+  bio?: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }] })
-  posts: Post[];
+  posts?: Post[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

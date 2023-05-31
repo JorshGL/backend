@@ -8,6 +8,8 @@ import { UtilsModule } from './utils/utils.module';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './comments/comments.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { PostsModule } from './posts/posts.module';
     AuthModule,
     UtilsModule,
     UsersModule,
-    PostsModule
+    PostsModule,
+    CommentsModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

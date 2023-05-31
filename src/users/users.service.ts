@@ -16,7 +16,7 @@ export class UsersService {
   }
 
   async findOneByFirebaseUid(firebaseUid: string): Promise<User> {
-    return this._userModel.findOne({ firebaseUid }).exec();
+    return await this._userModel.findOne({ firebaseUid }).exec();
   }
 
   async findAll(param: string, id: string): Promise<User[]> {
@@ -35,5 +35,14 @@ export class UsersService {
         { limit: 100 },
       )
       .exec();
+  }
+
+  async checkIfUsernameAlreadyExists(username: string): Promise<boolean> {
+    const user = await this._userModel.findOne({ username }).exec();
+    return !!user;
+  }
+
+  async findOne(id: string): Promise<User> {
+    return await this._userModel.findById(id).exec();
   }
 }

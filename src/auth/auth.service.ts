@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FirebaseApp, initializeApp } from 'firebase/app';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { firebaseConfig } from './firebase.config';
 import { RegisterDTO } from './dto/register.dto';
 import { UsersService } from 'src/users/users.service';
@@ -22,8 +26,14 @@ export class AuthService {
     });
   }
 
-  async register(registerDTO: RegisterDTO): Promise<{ token: string; user: User }> {
-    const { email, password } = registerDTO;
+  async register(
+    registerDTO: RegisterDTO,
+  ): Promise<{ token: string; user: User }> {
+    const { email, password, username } = registerDTO;
+
+    if (await this._usersService.checkIfUsernameAlreadyExists(username))
+      throw new Error('Username already exists');
+
     const { user: credentials } = await createUserWithEmailAndPassword(
       getAuth(this._app),
       email,
@@ -39,7 +49,11 @@ export class AuthService {
 
   async login(loginDTO: LoginDTO): Promise<{ token: string; user: User }> {
     const { email, password } = loginDTO;
-    const { user: credentials } = await signInWithEmailAndPassword(getAuth(this._app), email, password);
+    const { user: credentials } = await signInWithEmailAndPassword(
+      getAuth(this._app),
+      email,
+      password,
+    );
     const token = await credentials.getIdToken();
     const user = await this._usersService.findOneByFirebaseUid(credentials.uid);
     return { token, user };
